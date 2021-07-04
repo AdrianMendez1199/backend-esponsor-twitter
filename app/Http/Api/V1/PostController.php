@@ -27,5 +27,11 @@ class PostController extends Controller
     ], 201);
  
   }
+
+  public function posts(Request $request) {
+
+    // TODO paginate
+    return Post::paginate();
+  }
    
 }
