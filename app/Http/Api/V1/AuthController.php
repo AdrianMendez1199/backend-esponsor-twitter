@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Api\V1;;
+namespace App\Http\Api\V1;
 
 use App\Events\LoginEvent;
 use App\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ class AuthController extends Controller
     */
    public function register(Request $request) 
    {
-
+ 
     $fields = $request->validate([
         'name' => 'required|max:255',
         'username' => 'required|unique:users',
