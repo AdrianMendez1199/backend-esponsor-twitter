@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Api\V1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Route::get('/users/{id}', [UserController::class, 'show']);
+Route::post('/users', [UserController::class, 'create']);
