@@ -2,6 +2,7 @@
 
 namespace App\Http\Api\V1;;
 
+use App\Events\LoginEvent;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ class AuthController extends Controller
         ], 401);
       }
 
+      event(new LoginEvent($user, $request));
 
       return Response()->json([
         'token' => $user->createToken(env('MYAPP', 'APPPPPP'))->plainTextToken,
