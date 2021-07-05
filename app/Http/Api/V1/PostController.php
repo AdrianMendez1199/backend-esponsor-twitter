@@ -5,21 +5,27 @@ namespace App\Http\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Repository\Post\PostRepositoryInterface as PostRepository;
 
 class PostController extends Controller
 {
 
+  protected $posts;
+   
+  public function __construct(PostRepository $posts)
+  {
+     $this->posts = $posts;
+  }
+
   public function create(Request $request) {
 
     $fields = $request->validate([
-        'title' => 'required|max:40',
-        'body'  => 'required|max:255',
+        'message'  => 'required|max:255',
     ]);
 
 
-    $post = Post::create([
+    $post = $this->post->create([
       'user_id' => $request->user()->id,
-      'title'   => $fields['title'],
       'body'    => $fields['body'],
     ]);
   
@@ -31,7 +37,7 @@ class PostController extends Controller
 
   public function posts() {
     // TODO paginate
-    return Post::simplePaginate();
+    return $this->posts->getPosts();
   }
    
 }
