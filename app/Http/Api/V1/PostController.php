@@ -16,8 +16,9 @@ class PostController extends Controller
         'body'  => 'required|max:255',
     ]);
 
+
     $post = Post::create([
-      'user_id' =>  $request->user()->id,
+      'user_id' => $request->user()->id,
       'title'   => $fields['title'],
       'body'    => $fields['body'],
     ]);
@@ -28,10 +29,9 @@ class PostController extends Controller
  
   }
 
-  public function posts(Request $request) {
-
+  public function posts() {
     // TODO paginate
-    return Post::paginate();
+    return Post::simplePaginate();
   }
    
 }
