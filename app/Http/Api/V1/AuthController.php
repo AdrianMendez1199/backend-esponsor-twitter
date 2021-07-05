@@ -5,11 +5,19 @@ namespace App\Http\Api\V1;
 use App\Events\LoginEvent;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repository\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+   private $users;
+
+   public function __construct(UserRepositoryInterface $users) 
+   {
+     $this->users = $users;
+   }
    /**
     * Undocumented function
     * @param request $request
@@ -25,7 +33,7 @@ class AuthController extends Controller
         'password' => 'required|confirmed|min:6',
     ]);
 
-    $user = User::create([
+    $user = $this->users->create([
       'name' => $fields['name'],
       'username' => $fields['username'],
       'email' => $fields['email'],
@@ -49,7 +57,7 @@ class AuthController extends Controller
         'password' => 'required',
       ]);
 
-      $user = User::Where('username', $fields['username'])->first();
+      $user = $this->users->getUserByUsername($fields['username']);
 
       if(!$user || !Hash::check($fields['password'], $user->password)) {
         return Response()->json([
