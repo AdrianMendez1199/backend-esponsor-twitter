@@ -4,7 +4,6 @@ namespace App\Http\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Post;
 use App\Repository\Post\PostRepositoryInterface as PostRepository;
 
 class PostController extends Controller
