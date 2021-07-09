@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Repository\Post;
 
@@ -11,7 +11,7 @@ class PostRepository implements PostRepositoryInterface {
 
     public function __construct(Post $model)
     {
-      $this->model = $model;    
+      $this->model = $model;
     }
 
     public function create(array $data): ?Post {
@@ -23,6 +23,5 @@ class PostRepository implements PostRepositoryInterface {
             ->with('user')
             ->orderByDesc('created_at')
             ->simplePaginate($limit);
-           
     }
 }
