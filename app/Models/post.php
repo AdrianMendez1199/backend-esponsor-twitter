@@ -19,7 +19,6 @@ class Post extends Model
         'password',
         'remember_token',
         'status',
-        'created_at',
         'updated_at',
     ];
     

@@ -20,7 +20,9 @@ class PostRepository implements PostRepositoryInterface {
 
     public function getPosts(int $limit = 10): ?Paginator {
         return $this->model
+            ->with('user')
             ->orderByDesc('created_at')
             ->simplePaginate($limit);
+           
     }
 }
