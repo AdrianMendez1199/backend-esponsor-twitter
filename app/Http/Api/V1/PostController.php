@@ -23,9 +23,9 @@ class PostController extends Controller
     ]);
 
 
-    $post = $this->post->create([
+    $post = $this->posts->create([
       'user_id' => $request->user()->id,
-      'body'    => $fields['body'],
+      'message'    => $fields['message'],
     ]);
   
     return Response()->json([
