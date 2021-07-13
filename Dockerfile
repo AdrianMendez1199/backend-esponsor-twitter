@@ -1,5 +1,7 @@
 FROM php:8.0-apache
 
+WORKDIR /var/www/html
+
 RUN apt update \
         && apt install -y \
             g++ \
@@ -11,13 +13,29 @@ RUN apt update \
         && docker-php-ext-install \
             intl \
             opcache \
+            mysqli \
             pdo \
-            pdo_mysql \
+            pdo_pgsql
 
-WORKDIR /var/www/laravel_docker
+COPY . .
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# 3. mod_rewrite for URL rewrite and mod_headers for .htaccess extra headers like Access-Control-Allow-Origin-
+RUN a2enmod rewrite headers
+
+# 4. start with base php config, then add extensions
+# RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+RUN chown -R www-data:www-data /var/www/html
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN composer install && \
-    php artisan migrate && \
-    php artisan db:seed
+RUN ls -la
+
+RUN composer install
+
+EXPOSE 80
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
