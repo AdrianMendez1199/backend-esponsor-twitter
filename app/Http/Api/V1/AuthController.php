@@ -43,7 +43,7 @@ class AuthController extends Controller
      
      
      return Response()->json([
-       'token' => $user->createToken(env('TOKEN_SECRET'))->plainTextToken,
+       'token' => $user->createToken(env('TOKEN_SECRET', 'TEST'))->plainTextToken,
        'user' => $user,
      ], 201);
 
@@ -68,7 +68,7 @@ class AuthController extends Controller
       event(new LoginEvent($user, $request));
 
       return Response()->json([
-        'access_token' => $user->createToken(env('TOKEN_SECRET'))->plainTextToken,
+        'access_token' => $user->createToken(env('TOKEN_SECRET', 'TEST'))->plainTextToken,
         'token_type' => 'Bearer',
         'user' => $user,
       ], 200);
